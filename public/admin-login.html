@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Solana Beauty | Studio Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      background: radial-gradient(circle at top right, rgba(238, 215, 207, 0.4) 0%, rgba(250, 250, 248, 0) 60%),
+                  radial-gradient(circle at bottom left, rgba(232, 216, 176, 0.3) 0%, rgba(250, 250, 248, 0) 60%),
+                  var(--bg-primary);
+      padding: 20px;
+    }
+    .login-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 44px 36px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+    .login-logo {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .login-sub {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--accent-gold);
+      margin-bottom: 28px;
+    }
+    .login-form {
+      text-align: left;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+    .form-input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px rgba(194, 155, 56, 0.15);
+      background: #FFFFFF;
+    }
+    .login-error {
+      background: #FDF2F2;
+      color: #991B1B;
+      border: 1px solid #F87171;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .back-home {
+      display: inline-block;
+      margin-top: 24px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      transition: var(--transition-smooth);
+    }
+    .back-home:hover {
+      color: var(--accent-gold);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="login-logo">Solana</div>
+    <div class="login-sub">Studio Management Portal</div>
+
+    <div id="login-error" class="login-error"></div>
+
+    <form class="login-form" id="login-form">
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-input" required autocomplete="username" value="admin">
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-input" required autocomplete="current-password" placeholder="••••••••">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;" id="btn-login">
+        Sign In to Studio
+      </button>
+    </form>
+
+    <a href="/" class="back-home">&larr; Return to Website</a>
+  </div>
+
+  <script>
+    // Check if already authenticated
+    fetch('/api/auth/verify')
+      .then(res => res.json())
+      .then(data => {
+        if (data.authenticated) {
+          window.location.href = '/admin';
+        }
+      })
+      .catch(() => {});
+
+    const form = document.getElementById('login-form');
+    const errBox = document.getElementById('login-error');
+    const btn = document.getElementById('btn-login');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errBox.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Verifying...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: form.username.value.trim(),
+            password: form.password.value
+          })
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          window.location.href = '/admin';
+        } else {
+          errBox.textContent = data.error || 'Invalid credentials.';
+          errBox.style.display = 'block';
+        }
+      } catch (err) {
+        errBox.textContent = 'Network or server error. Please try again.';
+        errBox.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In to Studio';
+      }
+    });
+  </script>
+</body>
+</html>

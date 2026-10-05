@@ -1,0 +1,227 @@
+{
+  "settings": {
+    "site_title": "Solana Beauty | Aesthetic Studio & Clinic",
+    "tagline": "Natural Elegance & Clinical Perfection",
+    "phone": "+1 (555) 789-2345",
+    "whatsapp": "15557892345",
+    "telegram": "solanabeauty",
+    "instagram": "solana.beauty.studio",
+    "address": "450 Beverly Hills Blvd, Los Angeles, CA 90210",
+    "working_hours": "Mon - Sat: 9:00 AM - 8:00 PM | Sun: By Appointment",
+    "about_text": "Solana Beauty embodies medical-grade safety, artistry, and effortless beauty. Specializing in advanced lash architecture, micro-pigmentation, lip contouring, and brow sculpting. Every procedure is tailored to enhance your unique natural harmony in an ultra-clean, serene clinical atmosphere.",
+    "hero_tag": "Aesthetic Medicine & Cosmetic Artistry",
+    "hero_image_url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1000&q=85",
+    "hero_badge_title": "Master Certified",
+    "hero_badge_desc": "Premium Swiss & US Pigments",
+    "stat_num_1": "100%",
+    "stat_lbl_1": "Medical-Grade Hygiene",
+    "stat_lbl_2": "Happy Clients",
+    "stat_num_3": "8+",
+    "stat_lbl_3": "Years of Mastery",
+    "standards_badge": "The Solana Standard",
+    "standards_title": "Where Clinical Purity Meets Artistry",
+    "standards_subtitle": "We do not mask your features — we reveal your innate symmetry with sterile precision, cruelty-free materials, and customized contouring.",
+    "card_title_1": "Autoclave Sterility",
+    "card_desc_1": "100% single-use disposable micro-needles and hospital-grade air sterilization for your peace of mind.",
+    "card_title_2": "Bespoke Mapping",
+    "card_desc_2": "Every brow and lip line is measured strictly against your facial golden ratio before any procedure begins.",
+    "card_title_3": "Hypoallergenic Formula",
+    "card_desc_3": "Dermatologically tested mineral pigments that heal into soft, natural gradients without blue or red shift.",
+    "services_badge": "Treatment Menu",
+    "services_title": "Curated Beauty Services",
+    "services_subtitle": "Browse our signature aesthetic services. Each section and treatment is customizable in real time.",
+    "gallery_badge": "Client Transformations",
+    "gallery_title": "Real Results & Precision Craft",
+    "gallery_subtitle": "Authentic, unretouched results from our studio. Tap any image to examine detail in full screen.",
+    "booking_badge": "Reserve Your Session",
+    "booking_title": "Begin Your Transformation",
+    "booking_desc": "Have questions or ready to book your appointment? Contact our studio directly via WhatsApp or Telegram for instant assistance, or send us a request below.",
+    "hero_title_main": "Flawless contours, effortless radiance.",
+    "stat_num_2": "4,200+"
+  },
+  "catalog": [
+    {
+      "id": 1,
+      "slug": "brows",
+      "title": "Brow Architecture & Lamination",
+      "description": "Bespoke brow shaping, organic tinting, and keratin lamination for structured, fluffy volume.",
+      "sort_order": 1,
+      "created_at": "2026-10-05 22:10:43",
+      "services": [
+        {
+          "id": 1,
+          "category_id": 1,
+          "title": "Signature Brow Architecture",
+          "description": "Precision mapping, waxing/tweezing, and long-lasting hybrid dye tailored to face anatomy.",
+          "price": "$65",
+          "duration": "45 min",
+          "sort_order": 1,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 2,
+          "category_id": 1,
+          "title": "Keratin Brow Lamination & Nourishing Treatment",
+          "description": "Restructures unruly hairs, delivers high-gloss shine and lasting alignment for up to 8 weeks.",
+          "price": "$95",
+          "duration": "60 min",
+          "sort_order": 2,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 3,
+          "category_id": 1,
+          "title": "Powder Brows (Ombré Micropigmentation)",
+          "description": "Delicate pixel-shaded permanent makeup creating an airbrushed soft makeup effect.",
+          "price": "$350",
+          "duration": "120 min",
+          "sort_order": 3,
+          "created_at": "2026-10-05 22:10:43"
+        }
+      ],
+      "gallery": [
+        {
+          "id": 1,
+          "category_id": 1,
+          "title": "Laminated Brow Contour",
+          "image_url": "https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&w=800&q=80",
+          "sort_order": 1,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 2,
+          "category_id": 1,
+          "title": "Natural Ombre Shading",
+          "image_url": "https://images.unsplash.com/photo-1588515724527-074a7a56616c?auto=format&fit=crop&w=800&q=80",
+          "sort_order": 2,
+          "created_at": "2026-10-05 22:10:43"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "lashes",
+      "title": "Eyelash Extensions & Lift",
+      "description": "Weightless Japanese silk extensions and lash botox lifts designed for all-day comfort.",
+      "sort_order": 2,
+      "created_at": "2026-10-05 22:10:43",
+      "services": [
+        {
+          "id": 4,
+          "category_id": 2,
+          "title": "Classic Natural Lash Set (1:1)",
+          "description": "Single extension applied to every natural lash for refined, undetectable elegance.",
+          "price": "$120",
+          "duration": "75 min",
+          "sort_order": 1,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 5,
+          "category_id": 2,
+          "title": "Soft Russian Volume (2D-3D)",
+          "description": "Lightweight cashmere fans giving dreamy density, fluffy look without damaging natural lashes.",
+          "price": "$160",
+          "duration": "90 min",
+          "sort_order": 2,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 6,
+          "category_id": 2,
+          "title": "Keratin Lash Lift & Deep Tint",
+          "description": "Dramatic natural curl infused with peptides, vitamins, and deep raven-black gloss.",
+          "price": "$85",
+          "duration": "50 min",
+          "sort_order": 3,
+          "created_at": "2026-10-05 22:10:43"
+        }
+      ],
+      "gallery": [
+        {
+          "id": 3,
+          "category_id": 2,
+          "title": "Classic Cashmere Lashes",
+          "image_url": "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=800&q=80",
+          "sort_order": 1,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 4,
+          "category_id": 2,
+          "title": "Fluffy Volume Lashes",
+          "image_url": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80",
+          "sort_order": 2,
+          "created_at": "2026-10-05 22:10:43"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "lips",
+      "title": "Lip Blush & Micropigmentation",
+      "description": "Soft velvet gradient tinting creating youthful definition, subtle volume, and natural tint.",
+      "sort_order": 3,
+      "created_at": "2026-10-05 22:10:43",
+      "services": [
+        {
+          "id": 7,
+          "category_id": 3,
+          "title": "Aquarelle Lip Blush",
+          "description": "Sheer, translucent watercolor wash that enhances natural lip undertones and evens asymmetry.",
+          "price": "$400",
+          "duration": "120 min",
+          "sort_order": 1,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 8,
+          "category_id": 3,
+          "title": "Velvet Contour & Full Saturation",
+          "description": "Fuller coverage with defined borders and rich mineral pigments for lipstick-ready glamour.",
+          "price": "$450",
+          "duration": "150 min",
+          "sort_order": 2,
+          "created_at": "2026-10-05 22:10:43"
+        }
+      ],
+      "gallery": [
+        {
+          "id": 5,
+          "category_id": 3,
+          "title": "Nude Rose Lip Blush",
+          "image_url": "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
+          "sort_order": 1,
+          "created_at": "2026-10-05 22:10:43"
+        },
+        {
+          "id": 6,
+          "category_id": 3,
+          "title": "Velvet Coral Tint",
+          "image_url": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80",
+          "sort_order": 2,
+          "created_at": "2026-10-05 22:10:43"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "skin-care",
+      "title": "Clinical Facial Glow & Care",
+      "description": "Medical-grade express hydration, deep pore clarifying, and soothing antioxidant treatments.",
+      "sort_order": 4,
+      "created_at": "2026-10-05 22:10:43",
+      "services": [],
+      "gallery": [
+        {
+          "id": 7,
+          "category_id": 4,
+          "title": "Clinical Glow Treatment",
+          "image_url": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=80",
+          "sort_order": 1,
+          "created_at": "2026-10-05 22:10:43"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solana Beauty | Studio Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    :root {
+      --admin-sidebar-w: 270px;
+    }
+    body {
+      background-color: #F8F7F4;
+    }
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    /* Sidebar */
+    .admin-sidebar {
+      width: var(--admin-sidebar-w);
+      background-color: #FFFFFF;
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+    }
+    .sidebar-header {
+      padding: 22px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .sidebar-nav {
+      list-style: none;
+      padding: 16px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+    }
+    .sidebar-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.9rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: var(--transition-smooth);
+    }
+    .sidebar-btn:hover, .sidebar-btn.active {
+      background-color: var(--accent-pearl);
+      color: var(--text-primary);
+    }
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Help floating button on bottom left of sidebar */
+    .help-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 10px 14px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+    .help-btn:hover {
+      background: #DBEAFE;
+      transform: translateY(-1px);
+    }
+
+    /* Main Area */
+    .admin-main {
+      margin-left: var(--admin-sidebar-w);
+      flex: 1;
+      padding: 36px 40px;
+      max-width: 1240px;
+    }
+    .admin-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .admin-view {
+      display: none;
+    }
+    .admin-view.active {
+      display: block;
+    }
+    .admin-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+    .admin-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* Field Note Badge */
+    .field-hint {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: normal;
+    }
+    .location-tag {
+      display: inline-block;
+      background: #F3F4F6;
+      color: #4B5563;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 6px;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    /* Category Item */
+    .cat-mgmt-item {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .cat-mgmt-head {
+      padding: 18px 24px;
+      background: #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .cat-mgmt-body {
+      padding: 24px;
+    }
+
+    /* Table styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+    .data-table th, .data-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .data-table th {
+      background-color: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-size: 0.74rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Admin Gallery Grid */
+    .admin-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .admin-photo-card {
+      position: relative;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      aspect-ratio: 1;
+      border: 1px solid var(--border-subtle);
+      background: #FFFFFF;
+    }
+    .admin-photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .admin-photo-del {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(220, 38, 38, 0.85);
+      color: #FFFFFF;
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+    .admin-photo-del:hover {
+      background: rgb(220, 38, 38);
+      transform: scale(1.1);
+    }
+
+    /* Upload Box */
+    .upload-box {
+      border: 2px dashed var(--accent-gold);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      background: rgba(232, 216, 176, 0.15);
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: var(--transition-smooth);
+    }
+    .upload-box:hover {
+      background: rgba(232, 216, 176, 0.3);
+    }
+
+    /* Notification Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1C1A19;
+      color: #FFFFFF;
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.9rem;
+      z-index: 9999;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==============================================================
+       HELP & GUIDE MODAL
+       ============================================================== */
+    dialog.guide-dialog {
+      border: none;
+      border-radius: var(--radius-lg);
+      padding: 0;
+      background: #FFFFFF;
+      max-width: 650px;
+      width: 92%;
+      margin: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+    dialog.guide-dialog::backdrop {
+      background: rgba(15, 14, 13, 0.7);
+      backdrop-filter: blur(5px);
+    }
+    .guide-header {
+      background: var(--bg-tertiary);
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .guide-body {
+      padding: 28px;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+    .guide-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed var(--border-subtle);
+    }
+    .guide-step:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .guide-step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      color: #FFFFFF;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .guide-step-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .guide-step-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .guide-badge-target {
+      display: inline-block;
+      background: #FEF3C7;
+      color: #92400E;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 850px) {
+      .admin-sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+      }
+      .admin-layout {
+        flex-direction: column;
+      }
+      .admin-main {
+        margin-left: 0;
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <a href="/" target="_blank" style="display: block;">
+          <div style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 600;">Solana</div>
+          <div style="font-size: 0.65rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.2em;">Studio Management</div>
+        </a>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li>
+          <button class="sidebar-btn active" data-tab="tab-categories">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            Services & Photos
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-btn" data-tab="tab-hero">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            Hero & Cover
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-btn" data-tab="tab-content">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            Page Blocks & Standards
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-btn" data-tab="tab-bookings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Client Requests
+            <span id="booking-badge" style="margin-left: auto; background: var(--accent-gold); color: #FFF; font-size: 0.7rem; padding: 2px 7px; border-radius: 999px;">0</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-btn" data-tab="tab-settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            Studio Contacts
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <!-- Prominent HELP BUTTON in bottom-left -->
+        <button class="help-btn" id="btn-open-guide">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          Как здесь всё работает? (?)
+        </button>
+
+        <a href="/" target="_blank" class="btn btn-outline" style="width: 100%; font-size: 0.8rem; padding: 10px;">
+          View Live Site &nearr;
+        </a>
+        <button id="btn-logout" class="btn" style="width: 100%; background: #FEE2E2; color: #991B1B; font-size: 0.8rem; padding: 8px; border: none;">
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div>
+          <h1 style="font-size: 1.8rem;" id="topbar-title">Service Sections & Photos</h1>
+          <p style="color: var(--text-secondary); font-size: 0.88rem;" id="topbar-desc">
+            Manage procedures, prices, and upload your real results.
+          </p>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           TAB 1: CATEGORIES & SERVICES & PHOTOS
+           ============================================================ -->
+      <section id="tab-categories" class="admin-view active">
+        <!-- Add Category Form Card -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 style="font-size: 1.2rem;">+ Create New Section (Category)</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Each section becomes a menu tab on the website with its own procedures and photo gallery.
+              </p>
+            </div>
+          </div>
+          <form id="form-create-cat" style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end;">
+            <div style="flex: 1; min-width: 240px;">
+              <label class="form-label">
+                Section Title <span class="location-tag">Appears in Navigation & Service Header</span>
+              </label>
+              <input type="text" id="cat-title" class="form-input" placeholder="e.g. Lip Blush & Shading" required>
+            </div>
+            <div style="flex: 2; min-width: 280px;">
+              <label class="form-label">
+                Brief Description (Optional) <span class="location-tag">Appears under section title</span>
+              </label>
+              <input type="text" id="cat-desc" class="form-input" placeholder="e.g. Bespoke permanent watercolor lip enhancement">
+            </div>
+            <button type="submit" class="btn btn-primary" style="padding: 14px 24px;">Add Section</button>
+          </form>
+        </div>
+
+        <!-- Rendered Categories Container -->
+        <div id="admin-categories-list">
+          <!-- Populated via admin.js -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 2: HERO & COVER SECTION (EDITABLE FIELDS & MAIN PHOTO)
+           ============================================================ -->
+      <section id="tab-hero" class="admin-view">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 style="font-size: 1.2rem;">Main Cover (Hero Section)</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                The very first impression of your studio at the top of the homepage.
+              </p>
+            </div>
+          </div>
+
+          <form id="form-hero-settings">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="form-group">
+                <label class="form-label">
+                  Upper Badge Tag <span class="location-tag">Small pill badge above title</span>
+                </label>
+                <input type="text" id="set-hero-tag" class="form-input">
+                <span class="field-hint">e.g. "Aesthetic Medicine & Cosmetic Artistry"</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  Main Headline <span class="location-tag">Huge font title on homepage</span>
+                </label>
+                <input type="text" id="set-hero-title-main" class="form-input">
+                <span class="field-hint">e.g. "Flawless contours, effortless radiance."</span>
+              </div>
+
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label">
+                  Hero Subtitle Description <span class="location-tag">Paragraph text below main title</span>
+                </label>
+                <textarea id="set-hero-tagline" class="form-textarea" rows="3"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  Floating Badge Title <span class="location-tag">Card over main photo</span>
+                </label>
+                <input type="text" id="set-hero-badge-title" class="form-input">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">
+                  Floating Badge Subtitle <span class="location-tag">Inside card over photo</span>
+                </label>
+                <input type="text" id="set-hero-badge-desc" class="form-input">
+              </div>
+
+              <!-- Main Cover Photo Upload -->
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label">
+                  Main Studio Photo (Cover Image) <span class="location-tag">Right side hero image</span>
+                </label>
+                <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+                  <div style="width: 150px; height: 120px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); background: #eee;">
+                    <img id="hero-img-preview" src="" alt="Hero Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                  <div style="flex: 1; min-width: 250px;">
+                    <input type="file" id="hero-image-file" accept="image/*" class="form-input" style="padding: 10px;">
+                    <span class="field-hint">Choose a photo of your studio, procedure, or model (JPG, PNG, WebP)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Numbers / Counters -->
+              <div style="grid-column: 1/-1; border-top: 1px dashed var(--border-subtle); padding-top: 20px;">
+                <h4 style="font-size: 1rem; margin-bottom: 14px; color: var(--text-primary);">
+                  Counters & Statistics <span class="location-tag">Displayed below buttons on cover</span>
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                  <div>
+                    <label class="form-label">Stat 1 Value</label>
+                    <input type="text" id="set-stat-num-1" class="form-input">
+                    <label class="form-label" style="margin-top: 8px;">Stat 1 Label</label>
+                    <input type="text" id="set-stat-lbl-1" class="form-input">
+                  </div>
+                  <div>
+                    <label class="form-label">Stat 2 Value</label>
+                    <input type="text" id="set-stat-num-2" class="form-input">
+                    <label class="form-label" style="margin-top: 8px;">Stat 2 Label</label>
+                    <input type="text" id="set-stat-lbl-2" class="form-input">
+                  </div>
+                  <div>
+                    <label class="form-label">Stat 3 Value</label>
+                    <input type="text" id="set-stat-num-3" class="form-input">
+                    <label class="form-label" style="margin-top: 8px;">Stat 3 Label</label>
+                    <input type="text" id="set-stat-lbl-3" class="form-input">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 24px;">Save Cover Changes</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 3: PAGE BLOCKS & CLINICAL STANDARDS
+           ============================================================ -->
+      <section id="tab-content" class="admin-view">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 style="font-size: 1.2rem;">Clinical Standards & Philosophy Block</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                The three clinical safety cards explaining sterility and artistry.
+              </p>
+            </div>
+          </div>
+
+          <form id="form-content-settings">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="form-group">
+                <label class="form-label">
+                  Section Badge <span class="location-tag">Above Title</span>
+                </label>
+                <input type="text" id="set-standards-badge" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  Section Headline <span class="location-tag">Main Title</span>
+                </label>
+                <input type="text" id="set-standards-title" class="form-input">
+              </div>
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label">
+                  Section Subtitle <span class="location-tag">Introductory paragraph</span>
+                </label>
+                <textarea id="set-standards-subtitle" class="form-textarea" rows="2"></textarea>
+              </div>
+
+              <!-- Card 1 -->
+              <div class="form-group" style="background: var(--bg-primary); padding: 16px; border-radius: 8px;">
+                <label class="form-label">Card 1 Title</label>
+                <input type="text" id="set-card-title-1" class="form-input" style="margin-bottom: 8px;">
+                <label class="form-label">Card 1 Description</label>
+                <textarea id="set-card-desc-1" class="form-textarea" rows="3"></textarea>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="form-group" style="background: var(--bg-primary); padding: 16px; border-radius: 8px;">
+                <label class="form-label">Card 2 Title</label>
+                <input type="text" id="set-card-title-2" class="form-input" style="margin-bottom: 8px;">
+                <label class="form-label">Card 2 Description</label>
+                <textarea id="set-card-desc-2" class="form-textarea" rows="3"></textarea>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="form-group" style="background: var(--bg-primary); padding: 16px; border-radius: 8px; grid-column: 1/-1;">
+                <label class="form-label">Card 3 Title</label>
+                <input type="text" id="set-card-title-3" class="form-input" style="margin-bottom: 8px;">
+                <label class="form-label">Card 3 Description</label>
+                <textarea id="set-card-desc-3" class="form-textarea" rows="3"></textarea>
+              </div>
+
+              <!-- Section Headings for Gallery & Booking -->
+              <div style="grid-column: 1/-1; border-top: 1px dashed var(--border-subtle); padding-top: 20px;">
+                <h4 style="font-size: 1rem; margin-bottom: 14px;">Gallery & Booking Headings</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                  <div>
+                    <label class="form-label">Gallery Title</label>
+                    <input type="text" id="set-gallery-title" class="form-input" style="margin-bottom: 10px;">
+                    <label class="form-label">Gallery Subtitle</label>
+                    <input type="text" id="set-gallery-subtitle" class="form-input">
+                  </div>
+                  <div>
+                    <label class="form-label">Booking Section Title</label>
+                    <input type="text" id="set-booking-title" class="form-input" style="margin-bottom: 10px;">
+                    <label class="form-label">Booking Section Subtitle</label>
+                    <input type="text" id="set-booking-desc" class="form-input">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 24px;">Save Block Content</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 4: BOOKING REQUESTS
+           ============================================================ -->
+      <section id="tab-bookings" class="admin-view">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 style="font-size: 1.2rem;">Received Appointments & Leads</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Clients who filled in the booking form on the website.
+              </p>
+            </div>
+            <button class="btn btn-outline" style="padding: 8px 16px; font-size: 0.8rem;" onclick="loadBookings()">Refresh</button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Phone / WhatsApp</th>
+                  <th>Service Requested</th>
+                  <th>Date Preference</th>
+                  <th>Notes</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-table-body">
+                <!-- Populated via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 5: STUDIO CONTACTS & SETTINGS
+           ============================================================ -->
+      <section id="tab-settings" class="admin-view">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3 style="font-size: 1.2rem;">Studio Contact Details</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Direct messaging channels, studio location, and footer details.
+              </p>
+            </div>
+          </div>
+          <form id="form-settings">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="form-group">
+                <label class="form-label">
+                  Browser Tab Title <span class="location-tag">Title tag in browser tab</span>
+                </label>
+                <input type="text" id="set-site-title" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  Phone Number <span class="location-tag">Clickable call link</span>
+                </label>
+                <input type="text" id="set-phone" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  WhatsApp (digits with country code) <span class="location-tag">WhatsApp direct button</span>
+                </label>
+                <input type="text" id="set-whatsapp" class="form-input">
+                <span class="field-hint">e.g. 15557892345 (USA: 1 + 10 digits)</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  Telegram Username <span class="location-tag">Telegram direct button</span>
+                </label>
+                <input type="text" id="set-telegram" class="form-input">
+                <span class="field-hint">e.g. solanabeauty (without @)</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Instagram Username</label>
+                <input type="text" id="set-instagram" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Working Hours <span class="location-tag">Footer</span></label>
+                <input type="text" id="set-working-hours" class="form-input">
+              </div>
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label">
+                  Studio Address <span class="location-tag">Contact card and map info</span>
+                </label>
+                <input type="text" id="set-address" class="form-input">
+              </div>
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label">About the Studio <span class="location-tag">Footer text</span></label>
+                <textarea id="set-about-text" class="form-textarea" rows="3"></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save Contacts</button>
+          </form>
+        </div>
+
+        <!-- Security: Change Password -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 style="font-size: 1.2rem;">Change Admin Password</h3>
+          </div>
+          <form id="form-change-password" style="max-width: 400px;">
+            <div class="form-group">
+              <label class="form-label">New Password (min 6 characters)</label>
+              <input type="password" id="new-password" class="form-input" required minlength="6">
+            </div>
+            <button type="submit" class="btn btn-outline">Update Password</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==============================================================
+       HELP & GUIDE DIALOG MODAL (ОБУЧЕНИЕ И ПОДСКАЗКИ ДЛЯ МАМЫ)
+       ============================================================== -->
+  <dialog id="guide-dialog" class="guide-dialog">
+    <div class="guide-header">
+      <div>
+        <h3 style="font-size: 1.25rem; font-family: var(--font-serif); margin-bottom: 2px;">
+          📖 Понятная шпаргалка: как управлять сайтом
+        </h3>
+        <p style="font-size: 0.8rem; color: var(--text-secondary);">
+          Каждое действие сразу сохраняется и обновляет сайт в реальном времени.
+        </p>
+      </div>
+      <button type="button" id="guide-close" style="background: none; border: none; cursor: pointer; padding: 4px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="guide-body">
+      <!-- Шаг 1 -->
+      <div class="guide-step">
+        <div class="guide-step-num">1</div>
+        <div>
+          <div class="guide-step-title">Как добавить новый раздел услуг?</div>
+          <p class="guide-step-desc">
+            Перейдите во вкладку <strong>«Services & Photos»</strong>. В самом верху введите название раздела (например, <em>«Перманент губ»</em> или <em>«Lash Lift»</em>) и нажмите <strong>«Add Section»</strong>.
+          </p>
+          <div class="guide-badge-target">📍 Где это появится: Сверху в меню сайта и отдельным красивым блоком ниже!</div>
+        </div>
+      </div>
+
+      <!-- Шаг 2 -->
+      <div class="guide-step">
+        <div class="guide-step-num">2</div>
+        <div>
+          <div class="guide-step-title">Как загрузить фотографии своих работ?</div>
+          <p class="guide-step-desc">
+            В нужном разделе нажмите на пунктирный прямоугольник <strong>«Click to upload a new client photo...»</strong> и выберите фото со своего телефона или компьютера. Фото мгновенно загрузится и добавится в портфолио! Если захотите удалить фото — просто нажмите на крестик в углу фото.
+          </p>
+          <div class="guide-badge-target">📍 Где это появится: В фотогалерее работ. Клиентки смогут нажать на фото и рассмотреть его крупно.</div>
+        </div>
+      </div>
+
+      <!-- Шаг 3 -->
+      <div class="guide-step">
+        <div class="guide-step-num">3</div>
+        <div>
+          <div class="guide-step-title">Как добавить процедуру и цену ($)?</div>
+          <p class="guide-step-desc">
+            В строке под разделом напишите: Название (например: <em>«Классическое наращивание»</em>), Цену (например: <em>«$120»</em>) и Длительность (например: <em>«75 min»</em>), затем нажмите кнопку <strong>«+ Add»</strong>.
+          </p>
+          <div class="guide-badge-target">📍 Где это появится: В карточках цен с кнопкой «Book» для записи.</div>
+        </div>
+      </div>
+
+      <!-- Шаг 4 -->
+      <div class="guide-step">
+        <div class="guide-step-num">4</div>
+        <div>
+          <div class="guide-step-title">Как поменять главную фотографию обложки и тексты?</div>
+          <p class="guide-step-desc">
+            Во вкладке <strong>«Hero & Cover»</strong> вы можете выбрать новое главное фото салона или модели, изменить заголовок обложки и цифры («100% стерильность», «4,200+ клиентов»).
+          </p>
+          <div class="guide-badge-target">📍 Где это появится: На самом первом экране при входе на сайт.</div>
+        </div>
+      </div>
+
+      <!-- Шаг 5 -->
+      <div class="guide-step">
+        <div class="guide-step-num">5</div>
+        <div>
+          <div class="guide-step-title">Где смотреть записи клиенток?</div>
+          <p class="guide-step-desc">
+            Во вкладке <strong>«Client Requests»</strong> отображаются все клиенты, которые оставили заявку через форму на сайте, вместе с номерами телефонов и желаемыми датами.
+          </p>
+          <div class="guide-badge-target">📍 Вы можете прямо оттуда кликнуть по номеру и написать им в WhatsApp или позвонить.</div>
+        </div>
+      </div>
+
+      <!-- Шаг 6 -->
+      <div class="guide-step">
+        <div class="guide-step-num">6</div>
+        <div>
+          <div class="guide-step-title">Как изменить телефон, WhatsApp или адрес?</div>
+          <p class="guide-step-desc">
+            Во вкладке <strong>«Studio Contacts»</strong> введите свой актуальный номер телефона, WhatsApp и адрес салона, после чего нажмите <strong>«Save Contacts»</strong>.
+          </p>
+          <div class="guide-badge-target">📍 Кнопки WhatsApp и контакты на сайте сразу обновятся!</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; text-align: center;">
+        <button type="button" class="btn btn-primary" id="guide-close-btn" style="padding: 12px 28px;">
+          Всё понятно, спасибо!
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast">Action completed!</div>
+
+  <!-- Admin JS -->
+  <script src="/js/admin.js"></script>
+</body>
+</html>
