@@ -1,14 +1,13 @@
 {
-  "name": "siteformom",
+  "name": "solana-beauty",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Solana Beauty Studio & Clinic Official Website",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Solana Beauty",
+  "license": "UNLICENSED",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^13.0.3",
