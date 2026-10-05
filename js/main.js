@@ -129,6 +129,9 @@ async function loadSiteSettings() {
     setText('booking-desc', s.booking_desc);
 
     // Contacts & Footer
+    setText('nav-brand-name', s.site_brand_name || 'Solana');
+    setText('nav-brand-sub', s.site_brand_sub || 'Beauty Studio');
+    setText('footer-brand-title', (s.site_brand_name ? s.site_brand_name + ' ' + (s.site_brand_sub || 'Beauty') : 'Solana Beauty'));
     setText('studio-phone', s.phone);
     setText('studio-address', s.address);
     setText('footer-about', s.about_text);

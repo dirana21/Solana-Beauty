@@ -446,6 +446,8 @@ async function loadAllSettings() {
     setVal('set-booking-desc', s.booking_desc);
 
     // Studio Contacts Tab
+    setVal('set-brand-name', s.site_brand_name || 'Solana');
+    setVal('set-brand-sub', s.site_brand_sub || 'Beauty Studio');
     setVal('set-site-title', s.site_title);
     setVal('set-phone', s.phone);
     setVal('set-whatsapp', s.whatsapp);
@@ -534,6 +536,8 @@ function initForms() {
   document.getElementById('form-settings').addEventListener('submit', async (e) => {
     e.preventDefault();
     const payload = {
+      site_brand_name: document.getElementById('set-brand-name').value,
+      site_brand_sub: document.getElementById('set-brand-sub').value,
       site_title: document.getElementById('set-site-title').value,
       phone: document.getElementById('set-phone').value,
       whatsapp: document.getElementById('set-whatsapp').value,
